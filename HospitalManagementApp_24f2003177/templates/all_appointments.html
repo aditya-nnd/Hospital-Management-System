@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12">
+    <h2>All Appointments</h2>
+    <p class="lead">A complete log of all appointments in the system.</p>
+    <hr>
+    
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Patient</th>
+          <th>Doctor</th>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for appt in appointments %}
+        <tr>
+          <td>{{ appt.patient.name }}</td>
+          <td>Dr. {{ appt.doctor.name }}</td>
+          <td>{{ appt.date }}</td>
+          <td>{{ appt.time }}</td>
+          <td>
+            {% if appt.status == 'Booked' %}
+              <span class="badge bg-primary">{{ appt.status }}</span>
+            {% elif appt.status == 'Completed' %}
+              <span class="badge bg-success">{{ appt.status }}</span>
+            {% elif appt.status == 'Cancelled' %}
+              <span class="badge bg-danger">{{ appt.status }}</span>
+            {% else %}
+              <span class="badge bg-secondary">{{ appt.status }}</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if appt.status == 'Completed' %}
+              <a href="{{ url_for('appointment_details', appointment_id=appt.id) }}" class="btn btn-info btn-sm">View Report</a>
+            {% else %}
+              -
+            {% endif %}
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="6" class="text-center">No appointments found in the system.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+  </div>
+</div>
+{% endblock %}

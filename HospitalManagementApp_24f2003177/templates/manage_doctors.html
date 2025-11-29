@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-5">
+    <h2>Add New Doctor</h2>
+    <hr>
+    <form method="POST" action="{{ url_for('manage_doctors') }}">
+
+      <div class="mb-3">
+        <label for="name" class="form-label">Doctor's Full Name</label>
+        <input type="text" class="form-control" id="name" name="name" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="specialization" class="form-label">Specialization</label>
+        <input type="text" class="form-control" id="specialization" name="specialization" required>
+        <div class="form-text">e.g., "Cardiology", "Neurology"</div>
+      </div>
+
+      <div class="mb-3">
+        <label for="username" class="form-label">Login Username</label>
+        <input type="text" class="form-control" id="username" name="username" required>
+        <div class="form-text">The doctor will use this to log in.</div>
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Temporary Password</label>
+        <input type="password" class="form-control" id="password" name="password" required>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Add Doctor</button>
+    </form>
+  </div>
+
+  <div class="col-md-7">
+    <h2>Existing Doctors</h2>
+    <hr>
+    <form method="GET" action="{{ url_for('manage_doctors') }}" class="mb-3">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Search by name or specialization..." name="search_query">
+          <button class="btn btn-primary" type="submit">Search</button>
+          <a href="{{ url_for('manage_doctors') }}" class="btn btn-secondary">Clear</a>
+        </div>
+      </form>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Username</th>
+          <th>Specialization</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for doctor in doctors %}
+        <tr>
+          <td>{{ doctor.name }}</td>
+          <td>{{ doctor.user.username }}</td>
+          <td>{{ doctor.specialization }}</td>
+          <td> 
+            <a href="{{ url_for('edit_doctor', doctor_id=doctor.id) }}" class="btn btn-warning btn-sm">Edit</a>
+            <a href="{{ url_for('delete_doctor', doctor_id=doctor.id) }}" class="btn btn-danger btn-sm">Delete</a>
+            <a href="{{ url_for('toggle_active', user_id=doctor.user_id) }}" class="btn btn-dark btn-sm">Blacklist</a>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="3" class="text-center">No doctors found.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
