@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12">
+    <h2>Blacklisted Users</h2>
+    <p class="lead">View all inactive users. Click "Re-activate" to restore their login access.</p>
+    <hr>
+    
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Role</th>
+          <th>Full Name</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+        <tr>
+          <td>{{ user.username }}</td>
+          <td>
+            {% if user.role == 'doctor' %}
+              <span class="badge bg-info">Doctor</span>
+            {% elif user.role == 'patient' %}
+              <span class="badge bg-secondary">Patient</span>
+            {% else %}
+              <span class="badge bg-dark">{{ user.role }}</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if user.doctor %}
+              {{ user.doctor.name }}
+            {% elif user.patient %}
+              {{ user.patient.name }}
+            {% else %}
+              N/A
+            {% endif %}
+          </td>
+          <td>
+            <a href="{{ url_for('toggle_active', user_id=user.id) }}" class="btn btn-success btn-sm">Re-activate</a>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="4" class="text-center">There are no blacklisted users.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+  </div>
+</div>
+{% endblock %}

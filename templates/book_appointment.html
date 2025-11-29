@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12">
+    <h2>Book an Appointment</h2>
+    <p class="lead">Find a doctor and schedule your visit.</p>
+    <hr>
+  </div>
+</div>
+
+<div class="row mb-4">
+  <div class="col-md-8">
+    <form method="GET" action="{{ url_for('book_appointment') }}">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Enter specialization (e.g., Cardiology)" name="search_query">
+        <button class="btn btn-primary" type="submit">Search</button>
+        <a href="{{ url_for('book_appointment') }}" class="btn btn-secondary">Clear</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-md-12">
+    <h3>Available Doctors</h3>
+    
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Doctor Name</th>
+          <th>Specialization</th>
+          <th>Weekly Availability</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for doctor in doctors %}
+        <tr>
+          <td>{{ doctor.name }}</td>
+          <td>{{ doctor.specialization }}</td>
+          <td>
+            <ul class="list-unstyled mb-0">
+            {% for slot in doctor.availabilities %}
+              <li>
+                <strong>
+                {{ slot.date }}
+                </strong>:
+                {{ slot.start_time.strftime('%H:%M') }} - {{ slot.end_time.strftime('%H:%M') }}
+              </li>
+            {% else %}
+              <li>No set schedule.</li>
+            {% endfor %}
+            </ul>
+          </td>
+          <td>
+            <a href="{{ url_for('book_details', doctor_id=doctor.id) }}" class="btn btn-primary btn-sm">Book</a>
+          </td>
+        </tr>
+        {% else %} <tr>
+          <td colspan="4" class="text-center">No doctors match your search.</td>
+        </tr>
+        {% endfor %} </tbody>
+    </table>
+    
+  </div>
+</div>
+{% endblock %}
