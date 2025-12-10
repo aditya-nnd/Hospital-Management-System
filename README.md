@@ -71,6 +71,3 @@ Notes and tips
 - Templates included: `admin_dashboard.html`, `doctor_dashboard.html`, `patient_dashboard.html`, `login.html`, `register.html`, `book_appointment.html`, `my_appointments.html`, `manage_doctors.html`, `manage_patients.html`, `manage_availability.html`, etc.
 - Consider adding `Flask-Migrate` for schema migrations if you plan to evolve the DB schema.
 
-Next steps
-- Add a `requirements.txt` with pinned versions and (optionally) `Flask-Migrate` for DB migrations.
-- If you want, I can run a quick sanity check or start the app locally and verify routes.
